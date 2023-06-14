@@ -52,6 +52,10 @@ function validarFormulario(event) {
     if(esExito) {
       $form.className = 'oculto';
       document.querySelector('#exito').className = '';
+      setTimeout(() => {
+        window.location.href = 'wishlist.html' ;
+      }, "5000");
+      
     }
     
     event.preventDefault();
@@ -61,22 +65,33 @@ function manejarErrores(errores){
 
     const keys = Object.keys(errores);
     const $errores = document.querySelector('#errores');
+   
+    while ($errores.hasChildNodes()) {
+      $errores.removeChild($errores.firstChild);
+    }
 
     let cantidadErrores = 0;
+    
 
     keys.forEach(function(key){
       const error = errores[key];
+   
+      
 
       if(error){
         cantidadErrores ++;
+
         $form[key].className = 'error';
 
         const $error = document.createElement('li');
         $error.innerText = error;
         $errores.appendChild($error);
+        
       } else {
         
         $form[key].className = '';
+
+        
       }
 
       
