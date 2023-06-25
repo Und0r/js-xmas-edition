@@ -22,5 +22,5 @@ function probarValidarInputIntegrantes() {
     );
   }
 probarValidarInputIntegrantes();
-// probarValidarEdadIntegrante();
+
 
