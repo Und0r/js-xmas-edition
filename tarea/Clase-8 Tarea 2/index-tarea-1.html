@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Tarea 1</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="style.css"/>
+
+   
+</head>
+<body>
+    <form id="grupo-familiar">
+        <label for="cantidad-familiares">Cuantos integrantes hay en su grupo familiar?</label>
+        <input type="number" id="cantidad-familiares" pattern="^[0-9]+"/>
+        <button type="submit" id="siguiente-paso">Siguiente</button>
+
+   
+    
+    <div id="integrantes">
+
+    </div>
+
+    <button id="boton-calculo" class="oculto">Calcular</button>
+
+    <div id="resultado" class="oculto">
+        <p> <strong id="mayor-edad"></strong></p>
+        <p> <strong id="menor-edad"></strong></p>
+        <p> <strong id="promedio-edad"></strong></p>
+    </div>
+
+    <button type="reset" id="boton-reset" class="oculto">Empezar de nuevo</button>
+    <ul id="errores">
+
+    </ul>
+</form>
+
+    <script src='tarea-1.js'></script>
+    <script src="pruebas-tarea-1.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+    
+</head>
+<body>
+    <form id="form-salarios">
+        <p>Agregar la cantidad de integrantes de la familia que trabajan pulsando los botones correspondientes</p>
+        <button type="button" id="agregar-integrante">Agregar integrante</button>
+        <button type="button" id="quitar-integrante">Quitar integrante</button>
+
+    </form>
+    <button type="button" id="boton-calculo" class="oculto">Calcular salarios</button>
+
+
+    <div id="resultados" class="oculto">
+        <p id="salario-anual-max"></p>
+        <p id="salario-anual-min"></p>
+        <p id="salario-anual-prom"></p>
+        <p id="salario-mensual-prom"></p>
+    </div>
+
+    <ul id="errores">
+        
+    </ul>
+    
+    <script src='tarea-2.js'></script>
+    <script src="pruebas-tarea-2.js"></script>
+</body>
+</html>
