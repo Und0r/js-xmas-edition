@@ -12,7 +12,7 @@
 <body>
     <form id="grupo-familiar">
         <label for="cantidad-familiares">Cuantos integrantes hay en su grupo familiar?</label>
-        <input type="number" id="cantidad-familiares"/>
+        <input type="number" id="cantidad-familiares" pattern="^[0-9]+"/>
         <button type="submit" id="siguiente-paso">Siguiente</button>
 
    
@@ -30,9 +30,12 @@
     </div>
 
     <button type="reset" id="boton-reset" class="oculto">Empezar de nuevo</button>
+    <ul id="errores">
+
+    </ul>
 </form>
 
     <script src='tarea-1.js'></script>
-    <script src="pruebas-clase-6.js"></script>
+    <script src="pruebas-tarea-1.js"></script>
 </body>
 </html>
