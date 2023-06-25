@@ -27,11 +27,10 @@ document.querySelector('#siguiente-paso').onclick = function (event) {
 };
 
 document.querySelector('#boton-calculo').onclick = function (event) {
-  
   event.preventDefault();
   const edades = obtenerEdades();
 
-    borrarErrores();
+  borrarErrores();
 
   const esExito = validarEdades(edades) === 0;
   if (esExito) {
@@ -40,7 +39,6 @@ document.querySelector('#boton-calculo').onclick = function (event) {
     mostrarEdad('promedio', calcularPromedio(edades));
     mostrarResultados();
   }
-
 };
 
 document.querySelector('#boton-reset').onclick = function (event) {
@@ -67,7 +65,6 @@ function borrarErrores() {
   }
 
   ocultarResultados();
-  
 }
 
 function crearIntegrantes(cantidadIntegrantes) {
@@ -141,34 +138,25 @@ function obtenerEdades() {
 }
 
 function calcularMayorEdad(edadIntegrantes) {
- 
-
   const values = Object.values(edadIntegrantes);
 
+  let edadMayor = Number(values[0]);
 
-let edadMayor = Number(values[0]);
-
-for (let i = 1; i < values.length; i++) {
-  if (Number(values[i]) > edadMayor) {
-    
-    edadMayor = Number(values[i]);
+  for (let i = 1; i < values.length; i++) {
+    if (Number(values[i]) > edadMayor) {
+      edadMayor = Number(values[i]);
+    }
   }
-}
-return edadMayor;
-
-  
- 
+  return edadMayor;
 }
 
-function calcularMenorEdad(edadIntegrantes){
-
+function calcularMenorEdad(edadIntegrantes) {
   const values = Object.values(edadIntegrantes);
 
   let edadMenor = Number(values[0]);
- 
 
   for (let i = 0; i < values.length; i++) {
-    if (Number((values[i])) < edadMenor) {
+    if (Number(values[i]) < edadMenor) {
       edadMenor = Number(values[i]);
     }
   }
@@ -208,7 +196,6 @@ function validarEdades(edades) {
 
   keys.forEach(function (key) {
     const error = validarInputIntegrante(edades[key]);
-    
 
     if (error) {
       cantidadErrores++;
