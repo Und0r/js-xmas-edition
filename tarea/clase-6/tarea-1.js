@@ -1,10 +1,23 @@
 document.querySelector('#siguiente-paso').onclick = function (event) {
+  borrarErrores();
+  borrarIntegrantes();
+
   const $cantidadIntegrantes = Number(
     document.querySelector('#cantidad-familiares').value
   );
 
-  borrarIntegrantes();
-  if ($cantidadIntegrantes > 0) {
+  const validarInput = validarInputIntegrante($cantidadIntegrantes);
+
+  if (validarInput) {
+    document.querySelector('#cantidad-familiares').className = 'error';
+    const $errores = document.querySelector('#errores');
+    const $error = document.createElement('li');
+    $error.innerText = validarInputIntegrante(
+      document.querySelector('#cantidad-familiares').value
+    );
+    $errores.appendChild($error);
+  } else {
+    document.querySelector('#cantidad-familiares').className = '';
     crearIntegrantes($cantidadIntegrantes);
     mostrarBotonCalculo();
     mostrarBotonReset();
@@ -14,18 +27,25 @@ document.querySelector('#siguiente-paso').onclick = function (event) {
 };
 
 document.querySelector('#boton-calculo').onclick = function (event) {
+  
+  event.preventDefault();
   const edades = obtenerEdades();
 
-  mostrarEdad('mayor', calcularMayorEdad(edades));
-  mostrarEdad('menor', calcularMenorEdad(edades));
-  mostrarEdad('promedio', calcularPromedio(edades));
-  mostrarResultados();
+    borrarErrores();
 
-  event.preventDefault();
+  const esExito = validarEdades(edades) === 0;
+  if (esExito) {
+    mostrarEdad('mayor', calcularMayorEdad(edades));
+    mostrarEdad('menor', calcularMenorEdad(edades));
+    mostrarEdad('promedio', calcularPromedio(edades));
+    mostrarResultados();
+  }
+
 };
 
 document.querySelector('#boton-reset').onclick = function (event) {
   borrarIntegrantes();
+  borrarErrores();
   ocultarBotonCalculo();
   ocultarResultados();
   ocultarBotonReset();
@@ -40,15 +60,26 @@ function borrarIntegrantes() {
   }
 }
 
+function borrarErrores() {
+  const $errores = document.querySelector('#errores');
+  while ($errores.hasChildNodes()) {
+    $errores.removeChild($errores.firstChild);
+  }
+
+  ocultarResultados();
+  
+}
+
 function crearIntegrantes(cantidadIntegrantes) {
   const $divIntegrantes = document.querySelector('#integrantes');
 
   for (let i = 0; i < cantidadIntegrantes; i++) {
     const $div = document.createElement('div');
-    $div.id = 'integrante';
+    $div.id = `integrante`;
     const $label = document.createElement('label');
     $label.textContent = `Edad Integrante #${i + 1}`;
     const $input = document.createElement('input');
+    $input.name = `integrante ${i + 1}`;
     $input.type = 'number';
     $input.min = '0';
 
@@ -89,81 +120,107 @@ function ocultarBotonReset() {
 }
 
 function mostrarEdad(tipo, valor) {
-  document.querySelector(`#${tipo}-edad`).textContent = `La edad ${tipo} es: ${valor}`;
+  document.querySelector(
+    `#${tipo}-edad`
+  ).textContent = `La edad ${tipo} es: ${valor}`;
 }
 
 function obtenerEdades() {
   const $edadesIntegrantes = document.querySelectorAll('#integrante input');
-  edades = [];
+  const edades = {};
 
   for (let i = 0; i < $edadesIntegrantes.length; i++) {
-    if(Number($edadesIntegrantes[i].value) > 0){
-    edades.push(Number($edadesIntegrantes[i].value));
+    if ($edadesIntegrantes[i].value > 0) {
+      edades[`integrante ${i + 1}`] = $edadesIntegrantes[i].value;
+    } else {
+      edades[`integrante ${i + 1}`] = '';
+    }
   }
-  }
-
 
   return edades;
 }
 
 function calcularMayorEdad(edadIntegrantes) {
-  let edadMayor = edadIntegrantes[0];
+ 
 
-  for (let i = 1; i < edadIntegrantes.length; i++) {
-    if (edadIntegrantes[i] > edadMayor) {
-      edadMayor = edadIntegrantes[i];
-    }
+  const values = Object.values(edadIntegrantes);
+
+
+let edadMayor = Number(values[0]);
+
+for (let i = 1; i < values.length; i++) {
+  if (Number(values[i]) > edadMayor) {
+    
+    edadMayor = Number(values[i]);
   }
-  return edadMayor;
+}
+return edadMayor;
+
+  
+ 
 }
 
-function calcularMenorEdad(edadIntegrantes) {
-  let edadMenor = edadIntegrantes[0];
+function calcularMenorEdad(edadIntegrantes){
 
-  for (let i = 1; i < edadIntegrantes.length; i++) {
-    if (edadIntegrantes[i] < edadMenor) {
-      edadMenor = edadIntegrantes[i];
+  const values = Object.values(edadIntegrantes);
+
+  let edadMenor = Number(values[0]);
+ 
+
+  for (let i = 0; i < values.length; i++) {
+    if (Number((values[i])) < edadMenor) {
+      edadMenor = Number(values[i]);
     }
   }
   return edadMenor;
 }
 
 function calcularPromedio(edadIntegrantes) {
+  const values = Object.values(edadIntegrantes);
+
   let suma = 0;
 
-  for (let i = 0; i < edadIntegrantes.length; i++) {
-    suma += edadIntegrantes[i];
+  for (let i = 0; i < values.length; i++) {
+    suma += Number(values[i]);
   }
 
-  return (suma / edadIntegrantes.length).toFixed(2);
+  return (suma / values.length).toFixed(2);
 }
 
-//Tarea extra clase 7
 const $form = document.querySelector('#grupo-familiar');
-const $cantidadIntegrantes = $form['cantidad-familiares'].value
+const $cantidadIntegrantes = $form['cantidad-familiares'].value;
 
-
-
-
-function validarInputIntegrante(input){
-  if(input.length === 0){
-      return 'Este campo debe tener al menos 1 caracter';
-  }else if (input.length >= 3){
-      return 'Este campo debe tener menos de 3 caracteres';
+function validarInputIntegrante(input) {
+  if (input <= 0) {
+    return 'Este campo debe tener al menos 1 numero mayor a cero';
+  } else if (!/^[0-9]{1,2}$/.test(input)) {
+    return 'El campo solo acepta numeros enteros y no mas de 2 caracteres';
   } else {
-  return '';
-}
-}
-
-
-
-function validarEdadIntegrante(inputEdad){
-  if(inputEdad.length === 0){
-    return 'Este campo debe tener al menos 1 caracter';
-}else if (inputEdad.length >= 3){
-    return 'Este campo debe tener menos de 3 caracteres'
-} else {
-return '';
-}
+    return '';
+  }
 }
 
+function validarEdades(edades) {
+  const keys = Object.keys(edades);
+  const $errores = document.querySelector('#errores');
+
+  let cantidadErrores = 0;
+
+  keys.forEach(function (key) {
+    const error = validarInputIntegrante(edades[key]);
+    
+
+    if (error) {
+      cantidadErrores++;
+      $form[key].className = 'error';
+
+      const $error = document.createElement('li');
+      $error.innerText = error;
+      $errores.appendChild($error);
+    } else {
+      $form[key].className = '';
+    }
+  });
+
+  return cantidadErrores;
+}
